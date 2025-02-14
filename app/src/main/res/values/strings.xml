@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LoginDemo</string>
+    <string name="txtViewUser">Usuario</string>
+    <string name="txtViewPassword">Contraseña</string>
+    <string name="btnLogin">Iniciar Sesión</string>
+    <string name="btnForgotPassword">¿Olvidaste tu contraseña?</string>
+    <string name="txtQuestion">¿No tienes una cuenta?</string>
+    <string name="btnRegister">Registrate</string>
+    <string name="txtRegister">Registro</string>
+    <string name="txtConfirmPassword">Confirmar Contraseña</string>
+    <string name="btnConfirm">Confirmar</string>
+    <string name="txtViewWelcome">Bienvenido</string>
+    <string name="btnBack">Volver</string>
+    <string name="errorRequiredField">Campos requeridos</string>
+    <string name='txtMenu'>Menu</string>
+    <string name='errorMessage'>Error: </string>
+    <string name="txtBetter">Better</string>
+    <string name="txtTopping">Topping</string>
+    <string name='errorMin6Characters'>el nombre de usuario necesita un mínimo de 6 caracteres</string>
+    <string name='errorMin8Characters'>la contraseña de usuario necesita un mínimo de 8 caracteres</string>
+    <string name="errorInvalidUser">El usuario o la contraseña son incorrectos</string>
+    <string name='errorRequiredUser'>Nombre de usuario requerido</string>
+    <string name="errorRequiredPassword">Contraseña requerida</string>
+    <string name="errorRequiredConfirmPassword">Confirmar contraseña requerida</string>
+    <string name="txtRegisterSuccess">Registro exitoso</string>
+    <string name="txtUsernameInUse">el nombre de usuario ya está en uso</string>
+    <string name="txtPasswordMismatch">la confirmación de contraseña no coincide</string>
+</resources>

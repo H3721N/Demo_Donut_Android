@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+<ImageView
+    android:id="@+id/imageViewByte"
+    android:layout_width="170dp"
+    android:layout_height="200dp"
+    android:src="@drawable/byte_image"
+    android:layout_marginBottom="40dp"/>
+
+
+    <TextView
+        android:id="@+id/textViewUser"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/txtViewUser" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textViewUsername"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/md_theme_primary"
+        android:backgroundTint="@color/md_theme_secondary"
+        style="@style/OutlinedRoundedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/username"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_primary"
+            android:backgroundTint="@color/md_theme_secondary"
+            android:layout_marginBottom="20dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/txtViewPassword" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textViewPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/md_theme_primary"
+        android:backgroundTint="@color/md_theme_secondary"
+        style="@style/OutlinedRoundedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/md_theme_primary"
+            android:backgroundTint="@color/md_theme_secondary"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btnLogin"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/txtQuestion" />
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/btnRegister"
+        android:textColor="@color/md_theme_primary"/>
+
+
+</LinearLayout>
