@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Boolean checklogin = loginService.verifyLogin(username, password);
                     if (checklogin) {
-                        Toast.makeText(getApplicationContext(), R.string.txtViewWelcome, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.txtViewWelcome, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         intent.putExtra("username", username);
                         startActivity(intent);
