@@ -19,3 +19,6 @@ There is a pre-configured user available for testing:
 ## API
 
 The application consumes data from the following API endpoint: https://private-d24209-ocisneros.apiary-mock.com/donuts
+
+## Testing APK
+Includes the APK [loginDemo.apk](loginDemo.apk) file for testing the application on an Android device.
