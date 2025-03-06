@@ -3,22 +3,25 @@ package com.gomez.herlin.logindemo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import com.gomez.herlin.logindemo.dto.DonutsDto;
 import com.gomez.herlin.logindemo.adapter.ListAdapter;
+import com.gomez.herlin.logindemo.databinding.ActivityHomeBinding;
+import com.gomez.herlin.logindemo.dto.DonutsDto;
 import com.gomez.herlin.logindemo.retrofit.RetrofitApiService;
-import com.gomez.herlin.logindemo.retrofit.RetrofitClient;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -33,48 +36,48 @@ public class HomeActivity extends AppCompatActivity {
 
     List<DonutsDto> donutsDtoList;
 
+    List<DonutsDto> optionDlist;
+
     private RetrofitApiService retrofitApiService;
+
+    private AppBarConfiguration mAppBarConfiguration;
+    private ActivityHomeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        textViewUser = findViewById(R.id.textViewUserBar);
-        textViewUser.setText(getIntent().getStringExtra("username"));
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.appBarMain.toolbar);
 
-        btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-            HomeActivity.this.startActivity(intent);
-        });
-        retrofitApiService = RetrofitClient.getApiService();
-        getDonuts();
-
+        DrawerLayout drawer = binding.drawerLayout;
+        NavigationView navigationView = binding.navView;
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_account, R.id.nav_transfer, R.id.nav_payments,
+                R.id.nav_maintenance, R.id.nav_mtto, R.id.nav_contact,
+                R.id.nav_locations, R.id.nav_request_product, R.id.nav_notifications,
+                R.id.nav_blockages, R.id.nav_config, R.id.nav_tutorial)
+                .setOpenableLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
     public void init() {
-        /*donutsDtoList = new ArrayList<>();
-        donutsDtoList.add(new DonutsDto("1", "Pan", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("2", "Pan2", "Jalea"));
-        donutsDtoList.add(new DonutsDto("3", "Pan3", "Mermelada"));
-        donutsDtoList.add(new DonutsDto("4", "Pan4", "Crema"));
-        donutsDtoList.add(new DonutsDto("5", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("6", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("7", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("8", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("9", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("10", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("11", "Pan5", "Chocolate"));
-        donutsDtoList.add(new DonutsDto("12", "Pan5", "Chocolate"));
-        donutsDtoList.add(new Donu tsDto("13", "Pan5", "Chocolate"));*/
 
         ListAdapter listAdapter = new ListAdapter(donutsDtoList, this, new ListAdapter.OnItemClickListener() {
             @Override
@@ -85,10 +88,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(listAdapter);
 
     }
 

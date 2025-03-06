@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button)findViewById(R.id.btnLogin);
         tv_register = findViewById(R.id.tv_register);
 
-        /*textViewUsername.setText("hgomez123");
-        textViewPassword.setText("hgomez123");*/
 
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override

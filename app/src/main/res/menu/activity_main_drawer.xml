@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/group_24px"
+            android:title="@string/menu_account" />
+        <item
+            android:id="@+id/nav_transfer"
+            android:icon="@drawable/transfer_within_a_station_24px"
+            android:title="@string/menu_transfer" />
+        <item
+            android:id="@+id/nav_payments"
+            android:icon="@drawable/manufacturing_24px"
+            android:title="@string/menu_payments" />
+        <item
+            android:id="@+id/nav_maintenance"
+            android:icon="@drawable/engineering_24px"
+            android:title="@string/menu_maintenance" />
+        <item
+            android:id="@+id/nav_mtto"
+            android:icon="@drawable/mobile_screen_share_24px"
+            android:title="@string/menu_mtto" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/call_24px"
+            android:title="@string/menu_contact" />
+
+
+        <item
+            android:id="@+id/nav_locations"
+            android:icon="@drawable/pin_drop_24px"
+            android:title="@string/menu_locations" />
+        <item
+            android:id="@+id/nav_request_product"
+            android:icon="@drawable/inventory_2_24px"
+            android:title="@string/menu_request_product" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/notifications_24px"
+            android:title="@string/menu_slideshow" />
+        <item
+            android:id="@+id/nav_blockages"
+            android:icon="@drawable/block_24px"
+            android:title="@string/menu_blockages" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/manufacturing_24px"
+            android:title="@string/menu_config" />
+        <item
+            android:id="@+id/nav_tutorial"
+            android:icon="@drawable/person_raised_hand_24px"
+            android:title="@string/menu_tutorial" />
+
+    </group>
+</menu>
