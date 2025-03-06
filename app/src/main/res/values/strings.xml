@@ -27,7 +27,7 @@
     <string name="txtPasswordMismatch">la confirmación de contraseña no coincide</string>
 
     <string name="menu_home">Inicio</string>
-    <string name="nav_header_title">Bienvenido</string>
+    <string name="nav_header_title"><b>Bienvenido</b></string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
