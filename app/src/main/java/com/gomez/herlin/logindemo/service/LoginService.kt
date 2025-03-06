@@ -1,53 +1,53 @@
-package com.gomez.herlin.logindemo.service;
+package com.gomez.herlin.logindemo.service
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 
-public class LoginService extends SQLiteOpenHelper {
-    public LoginService(Context context) {
-        super(context, "LoginDemo", null, 1);
+class LoginService(context: Context?) :
+    SQLiteOpenHelper(context, "LoginDemo", null, 1) {
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " username TEXT, password TEXT)"
+        )
+        val contentValues = ContentValues()
+        contentValues.put("username", "hgomez123")
+        contentValues.put("password", "hgomez123")
+        db.insert("users", null, contentValues)
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " username TEXT, password TEXT)");
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("username", "hgomez123");
-        contentValues.put("password", "hgomez123");
-        db.insert("users", null, contentValues);
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS users")
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS users");
+    fun Insert(username: String?, password: String?): Boolean {
+        val sqLiteDatabase = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put("username", username)
+        contentValues.put("password", password)
+        val result = sqLiteDatabase.insert("users", null, contentValues)
+        return result != -1L
     }
 
-    public boolean Insert(String username, String password) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("username", username);
-        contentValues.put("password", password);
-        long result = sqLiteDatabase.insert("users", null, contentValues);
-        return result != -1;
+    fun verifyUser(username: String): Boolean {
+        val sqLiteDatabase = this.writableDatabase
+        val cursor =
+            sqLiteDatabase.rawQuery("SELECT * FROM users WHERE username=?", arrayOf(username))
+        val count = cursor.count
+        cursor.close()
+        return count <= 0
     }
 
-    public Boolean verifyUser(String username) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE username=?", new String[]{username});
-        int count = cursor.getCount();
-        cursor.close();
-        return count <= 0;
-    }
-
-    public Boolean verifyLogin(String username, String password){
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE username=? AND password=?", new String[]{username, password});
-        int count = cursor.getCount();
-        cursor.close();
-        return count > 0;
+    fun verifyLogin(username: String, password: String): Boolean {
+        val sqLiteDatabase = this.readableDatabase
+        val cursor = sqLiteDatabase.rawQuery(
+            "SELECT * FROM users WHERE username=? AND password=?",
+            arrayOf(username, password)
+        )
+        val count = cursor.count
+        cursor.close()
+        return count > 0
     }
 }

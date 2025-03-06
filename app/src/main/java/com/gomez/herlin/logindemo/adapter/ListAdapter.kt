@@ -1,81 +1,63 @@
-package com.gomez.herlin.logindemo.adapter;
+package com.gomez.herlin.logindemo.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import com.gomez.herlin.logindemo.R
+import com.gomez.herlin.logindemo.dto.DonutsDto
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
+class ListAdapter(
+    private var donutsDtoList: List<DonutsDto>,
+    private val context: Context,
+    val listener: OnItemClickListener
+) :
+    RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+    private val minflater: LayoutInflater = LayoutInflater.from(context)
 
-import com.gomez.herlin.logindemo.R;
-import com.gomez.herlin.logindemo.dto.DonutsDto;
-
-import java.util.List;
-
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private List<DonutsDto> donutsDtoList;
-    private LayoutInflater minflater;
-    private Context context;
-
-    final OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(DonutsDto item);
+    interface OnItemClickListener {
+        fun onItemClick(item: DonutsDto?)
     }
 
-    public ListAdapter(List<DonutsDto> donutsDtoList, Context context, OnItemClickListener listener) {
-        this.donutsDtoList = donutsDtoList;
-        this.minflater = LayoutInflater.from(context);
-        this.context = context;
-        this.listener = listener;
+    override fun getItemCount(): Int {
+        return donutsDtoList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return donutsDtoList.size();
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_element, parent, false)
+        return ViewHolder(view)
     }
 
-    @Override
-    public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = minflater.from(parent.getContext()).inflate(R.layout.list_element, parent, false);
-        return new ViewHolder(view);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.cv.animation =
+            AnimationUtils.loadAnimation(context, R.anim.fade_transition)
+        holder.bindData(donutsDtoList[position])
     }
 
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.cv.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transition));
-        holder.bindData(donutsDtoList.get(position));
+    fun setItems(items: List<DonutsDto>) {
+        donutsDtoList = items
     }
 
-    public void setItems(List<DonutsDto> items){
-        donutsDtoList = items;
-    }
+    inner class ViewHolder internal constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var id: TextView = itemView.findViewById(R.id.idTextView)
+        var type: TextView = itemView.findViewById(R.id.typeTextView)
+        var name: TextView = itemView.findViewById(R.id.nameTextView)
+        var cv: CardView = itemView.findViewById(R.id.cv)
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView id, type, name;
-        CardView cv;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            id = itemView.findViewById(R.id.idTextView);
-            type = itemView.findViewById(R.id.typeTextView);
-            name = itemView.findViewById(R.id.nameTextView);
-            cv = itemView.findViewById(R.id.cv);
-        }
-
-        void bindData(final DonutsDto donutsDto) {
-            id.setText(donutsDto.getId());
-            type.setText(donutsDto.getType());
-            name.setText(donutsDto.getName());
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(donutsDto);
-                }
-            });
+        fun bindData(donutsDto: DonutsDto) {
+            id.text = donutsDto.id
+            type.text = donutsDto.type
+            name.text = donutsDto.name
+            itemView.setOnClickListener {
+                listener.onItemClick(
+                    donutsDto
+                )
+            }
         }
     }
 }

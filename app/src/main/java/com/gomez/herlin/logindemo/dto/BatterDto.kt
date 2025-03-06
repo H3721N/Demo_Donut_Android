@@ -1,32 +1,15 @@
-package com.gomez.herlin.logindemo.dto;
+package com.gomez.herlin.logindemo.dto
 
-import java.io.Serializable;
+import java.io.Serializable
 
-public class BatterDto implements Serializable {
-    private String id;
-    private String type;
+class BatterDto : Serializable {
+    var id: String? = null
+    var type: String? = null
 
-    public BatterDto() {
-    }
+    constructor()
 
-    public BatterDto(String id, String type) {
-        this.id = id;
-        this.type = type;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    constructor(id: String?, type: String?) {
+        this.id = id
+        this.type = type
     }
 }

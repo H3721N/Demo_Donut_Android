@@ -1,119 +1,98 @@
-package com.gomez.herlin.logindemo;
+package com.gomez.herlin.logindemo
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.gomez.herlin.logindemo.adapter.ListAdapter
+import com.gomez.herlin.logindemo.databinding.ActivityHomeBinding
+import com.gomez.herlin.logindemo.dto.DonutsDto
+import com.gomez.herlin.logindemo.retrofit.RetrofitApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+class HomeActivity : AppCompatActivity() {
 
-import com.gomez.herlin.logindemo.adapter.ListAdapter;
-import com.gomez.herlin.logindemo.databinding.ActivityHomeBinding;
-import com.gomez.herlin.logindemo.dto.DonutsDto;
-import com.gomez.herlin.logindemo.retrofit.RetrofitApiService;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+    private lateinit var textViewUser: TextView
+    private lateinit var btnLogout: Button
 
-import java.util.List;
+    private var donutsDtoList: List<DonutsDto>? = null
+    private lateinit var retrofitApiService: RetrofitApiService
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    private lateinit var mAppBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityHomeBinding
 
-public class HomeActivity extends AppCompatActivity {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    private TextView textViewUser;
-    private Button btnLogout;
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBarMain.toolbar)
 
-    List<DonutsDto> donutsDtoList;
-
-    List<DonutsDto> optionDlist;
-
-    private RetrofitApiService retrofitApiService;
-
-    private AppBarConfiguration mAppBarConfiguration;
-    private ActivityHomeBinding binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        setSupportActionBar(binding.appBarMain.toolbar);
-
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_account, R.id.nav_transfer, R.id.nav_payments,
-                R.id.nav_maintenance, R.id.nav_mtto, R.id.nav_contact,
-                R.id.nav_locations, R.id.nav_request_product, R.id.nav_notifications,
-                R.id.nav_blockages, R.id.nav_config, R.id.nav_tutorial)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        val drawer = binding.drawerLayout
+        val navigationView = binding.navView
+        mAppBarConfiguration = AppBarConfiguration.Builder(
+            R.id.nav_account, R.id.nav_transfer, R.id.nav_payments,
+            R.id.nav_maintenance, R.id.nav_mtto, R.id.nav_contact,
+            R.id.nav_locations, R.id.nav_request_product, R.id.nav_notifications,
+            R.id.nav_blockages, R.id.nav_config, R.id.nav_tutorial
+        ).setOpenableLayout(drawer).build()
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration)
+        NavigationUI.setupWithNavController(navigationView, navController)
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-    public void init() {
-
-        ListAdapter listAdapter = new ListAdapter(donutsDtoList, this, new ListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DonutsDto item) {
-                moveToDescription(item);
-            }
-        });
-
-
-
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
     }
 
-    private void getDonuts() {
-        retrofitApiService.getDonuts().enqueue(new Callback<List<DonutsDto>>() {
-            @Override
-            public void onResponse(Call<List<DonutsDto>> call, Response<List<DonutsDto>> response) {
-                if (response.isSuccessful()) {
-                    donutsDtoList = response.body();
-                    init();
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController( R.id.nav_host_fragment_content_main)
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration!!)
+                || super.onSupportNavigateUp()
+    }
+
+    /*fun init() {
+        val listAdapter = ListAdapter(
+            donutsDtoList, this
+        ) { item ->
+            moveToDescription(
+                item
+            )
+        }
+    }*/
+
+   /* private fun getDonuts() {
+        retrofitApiService.donuts.enqueue(object : Callback<List<DonutsDto>> {
+            override fun onResponse(call: Call<List<DonutsDto>>, response: Response<List<DonutsDto>>) {
+                if (response.isSuccessful) {
+                    donutsDtoList = response.body()
+                    init()
                 }
             }
 
-            @Override
-            public void onFailure(Call<List<DonutsDto>> call, Throwable t) {
-                Log.e("Error", t.getMessage());
-                Toast.makeText(HomeActivity.this, R.string.errorMessage+t.getMessage(), Toast.LENGTH_SHORT).show();
+            override fun onFailure(call: Call<List<DonutsDto>>, t: Throwable) {
+                Log.e("Error", t.message ?: "Unknown error")
+                Toast.makeText(this@HomeActivity, getString(R.string.errorMessage) + t.message, Toast.LENGTH_SHORT).show()
             }
-        });
-    }
+        })
+    }*/
 
 
-    public void moveToDescription(DonutsDto item) {
-        Intent intent = new Intent(this, DescriptionActivity.class);
-        intent.putExtra("DonutsDto", item);
-        intent.putExtra("username", getIntent().getStringExtra("username"));
-        startActivity(intent);
+    fun moveToDescription(item: DonutsDto?) {
+        val intent = Intent(this, DescriptionActivity::class.java)
+        intent.putExtra("DonutsDto", item)
+        intent.putExtra("username", getIntent().getStringExtra("username"))
+        startActivity(intent)
     }
+
 }

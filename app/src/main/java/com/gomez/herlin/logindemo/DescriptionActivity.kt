@@ -1,78 +1,80 @@
-package com.gomez.herlin.logindemo;
+package com.gomez.herlin.logindemo
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.gomez.herlin.logindemo.dto.BatterDto
+import com.gomez.herlin.logindemo.dto.DonutsDto
+import com.gomez.herlin.logindemo.dto.ToppingDto
+import com.gomez.herlin.logindemo.fragment.ListDetailFragment
+import java.util.function.Consumer
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+class DescriptionActivity : AppCompatActivity() {
+    var titleDescriptionTextView: TextView? = null
+    var nameDescriptionTextView: TextView? = null
+    var typeDescriptionTextView: TextView? = null
+    var ppuDescriptionTextView: TextView? = null
+    private var textViewUser: TextView? = null
 
-import com.gomez.herlin.logindemo.dto.DonutsDto;
-import com.gomez.herlin.logindemo.fragment.ListDetailFragment;
+    private var btnLogout: Button? = null
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.enableEdgeToEdge()
+        setContentView(R.layout.activity_description)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById(R.id.main)
+        ) { v: View, insets: WindowInsetsCompat ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
-public class DescriptionActivity extends AppCompatActivity {
+        val donutDto = intent.getSerializableExtra("DonutsDto") as DonutsDto?
+        titleDescriptionTextView = findViewById(R.id.titleDescriptionTextView)
+        nameDescriptionTextView = findViewById(R.id.nameDescriptionTextView)
+        typeDescriptionTextView = findViewById(R.id.typeDescriptionTextView)
+        ppuDescriptionTextView = findViewById(R.id.ppuDescriptionTextView)
 
-    TextView titleDescriptionTextView, nameDescriptionTextView, typeDescriptionTextView, ppuDescriptionTextView;
-    private TextView textViewUser;
+        donutDto?.let {
+            titleDescriptionTextView?.text = "ID: ${it.id}"
+            nameDescriptionTextView?.text = "Name: ${it.name}"
+            typeDescriptionTextView?.text = "Type: ${it.type}"
+            ppuDescriptionTextView?.text = "PPU: ${it.ppu}"
+        }
 
-    private Button btnLogout;
+        textViewUser = findViewById(R.id.textViewUser)
+        textViewUser?.text = intent.getStringExtra("username")
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_description);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        btnLogout = findViewById(R.id.btnLogout)
+        btnLogout?.setOnClickListener{
+            val intent = Intent(
+                this@DescriptionActivity,
+                MainActivity::class.java
+            )
+            this@DescriptionActivity.startActivity(intent)
+        }
 
-        DonutsDto donutDto = (DonutsDto) getIntent().getSerializableExtra("DonutsDto");
-        titleDescriptionTextView = findViewById(R.id.titleDescriptionTextView);
-        nameDescriptionTextView = findViewById(R.id.nameDescriptionTextView);
-        typeDescriptionTextView = findViewById(R.id.typeDescriptionTextView);
-        ppuDescriptionTextView = findViewById(R.id.ppuDescriptionTextView);
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
 
-        titleDescriptionTextView.setText("ID: " + donutDto.getId());
-        nameDescriptionTextView.setText("Name: " + donutDto.getName());
-        typeDescriptionTextView.setText("Type: " + donutDto.getType());
-        ppuDescriptionTextView.setText("PPU: " + String.valueOf(donutDto.getPpu()));
+        val batters: MutableList<String> = ArrayList()
+        donutDto?.batters?.batter?.forEach(Consumer { topping: BatterDto -> batters.add(topping.id + " - " + topping.type) })
+        val fragment1 = ListDetailFragment(batters)
 
-        textViewUser = findViewById(R.id.textViewUser);
-        textViewUser.setText(getIntent().getStringExtra("username"));
+        val toppings: MutableList<String> = ArrayList()
+        donutDto?.topping?.forEach(Consumer { topping: ToppingDto -> toppings.add(topping.id + " - " + topping.type) })
+        val fragment2 = ListDetailFragment(toppings)
 
-        btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(DescriptionActivity.this, MainActivity.class);
-            DescriptionActivity.this.startActivity(intent);
-        });
+        fragmentTransaction.add(R.id.fragmentContainerBatters, fragment1)
+        fragmentTransaction.add(R.id.fragmentContainerTopping, fragment2)
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        List<String> batters = new ArrayList<>();
-        donutDto.getBatters().getBatter().forEach(topping -> batters.add(topping.getId() +" - " + topping.getType()));
-        ListDetailFragment fragment1 = new ListDetailFragment(batters);
-
-        List<String> toppings = new ArrayList<>();
-        donutDto.getTopping().forEach(topping -> toppings.add(topping.getId() +" - " + topping.getType()));
-        ListDetailFragment fragment2 = new ListDetailFragment(toppings);
-
-        fragmentTransaction.add(R.id.fragmentContainerBatters, fragment1);
-        fragmentTransaction.add(R.id.fragmentContainerTopping, fragment2);
-
-        fragmentTransaction.commit();
-
+        fragmentTransaction.commit()
     }
 }

@@ -1,14 +1,10 @@
-package com.gomez.herlin.logindemo.retrofit;
+package com.gomez.herlin.logindemo.retrofit
 
-import com.gomez.herlin.logindemo.dto.DonutsDto;
+import com.gomez.herlin.logindemo.dto.DonutsDto
+import retrofit2.Call
+import retrofit2.http.GET
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.http.GET;
-
-public interface RetrofitApiService {
-
-    @GET("donuts")
-    Call<List<DonutsDto>> getDonuts();
+interface RetrofitApiService {
+    @get:GET("donuts")
+    val donuts: Call<List<DonutsDto?>?>?
 }

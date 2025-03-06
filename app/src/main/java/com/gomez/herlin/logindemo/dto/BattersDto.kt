@@ -1,23 +1,13 @@
-package com.gomez.herlin.logindemo.dto;
+package com.gomez.herlin.logindemo.dto
 
-import java.io.Serializable;
-import java.util.List;
+import java.io.Serializable
 
-public class BattersDto implements Serializable {
-    private List<BatterDto> batter;
+class BattersDto : Serializable {
+    var batter: List<BatterDto>? = null
 
-    public BattersDto() {
-    }
+    constructor()
 
-    public BattersDto(List<BatterDto> batter) {
-        this.batter = batter;
-    }
-
-    public List<BatterDto> getBatter() {
-        return batter;
-    }
-
-    public void setBatter(List<BatterDto> batter) {
-        this.batter = batter;
+    constructor(batter: List<BatterDto>?) {
+        this.batter = batter
     }
 }

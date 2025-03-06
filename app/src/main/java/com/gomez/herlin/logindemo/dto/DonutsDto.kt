@@ -1,83 +1,42 @@
-package com.gomez.herlin.logindemo.dto;
+package com.gomez.herlin.logindemo.dto
 
-import java.io.Serializable;
-import java.util.List;
+import java.io.Serializable
 
-public class DonutsDto implements Serializable {
-    private String id;
-    private String type;
-    private String name;
-    private double ppu;
-    private BattersDto batters;
-    private List<ToppingDto> topping;
+class DonutsDto : Serializable {
+    @JvmField
+    var id: String? = null
+    @JvmField
+    var type: String? = null
+    @JvmField
+    var name: String? = null
+    var ppu: Double = 0.0
+    var batters: BattersDto? = null
+    var topping: List<ToppingDto>? = null
 
-    public DonutsDto() {
+    constructor()
+
+    constructor(id: String?, type: String?, name: String?) {
+        this.id = id
+        this.type = type
+        this.name = name
     }
 
-    public DonutsDto(String id, String type, String name) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
+    constructor(
+        id: String?,
+        type: String?,
+        name: String?,
+        ppu: Double,
+        batters: BattersDto?,
+        topping: List<ToppingDto>?
+    ) {
+        this.id = id
+        this.type = type
+        this.name = name
+        this.ppu = ppu
+        this.batters = batters
+        this.topping = topping
     }
 
-    public DonutsDto(String id, String type, String name, double ppu, BattersDto batters, List<ToppingDto> topping) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.ppu = ppu;
-        this.batters = batters;
-        this.topping = topping;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPpu() {
-        return ppu;
-    }
-
-    public void setPpu(double ppu) {
-        this.ppu = ppu;
-    }
-
-    public BattersDto getBatters() {
-        return batters;
-    }
-
-    public void setBatters(BattersDto batters) {
-        this.batters = batters;
-    }
-
-    public List<ToppingDto> getTopping() {
-        return topping;
-    }
-
-    public void setTopping(List<ToppingDto> topping) {
-        this.topping = topping;
-    }
-
-    public List<DonutsDto> getDonuts() {
-        return null;
-    }
+    val donuts: List<DonutsDto>?
+        get() = null
 }
